@@ -1,0 +1,30 @@
+                /*
+                GraphNode * temp = &x;
+                GraphNode * newNode = new GraphNode(friend2, NULL);
+                //cout << "tmepe " << temp << " next " << temp->nextNode << endl; 
+                while(temp && temp->nextNode != NULL){ 
+                    //cout << "22 " << temp->mName << endl;  
+                    temp = temp->nextNode;
+                }
+                
+                if(temp->nextNode == NULL){
+                    //cout <<"no friend for " << temp->mName << "\n";
+                    temp->nextNode = newNode;
+                    //cout << "ads " << temp->nextNode << endl; 
+                } 
+                //cout << "5 added " << newNode->mName << " to " << temp->mName << "'s list" << endl;
+                */
+                                /*
+                if(x.nextNode == NULL){
+                    x.nextNode = new GraphNode(friend1);
+                    //cout << "3 added " << friend1 << " to " << friend2 << "'s list" << endl;
+                }
+                else{
+                    while(x.nextNode != NULL){
+                        x.nextNode = x.nextNode->nextNode;          
+                    }
+                    x.nextNode = new GraphNode(friend1);
+                    //cout << "4 added " << friend1 << " to " << friend2 << "'s list" << endl;
+                
+                } 
+                */ 
