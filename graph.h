@@ -9,7 +9,7 @@ using namespace std;
 struct GraphNode {
 
     string mName;
-    int dataIndex; 
+    //int dataIndex; 
     GraphNode * nextNode;
     GraphNode() : mName(""), nextNode(NULL) {}; 
     GraphNode(string inName) : mName(inName), nextNode(NULL) {}; 

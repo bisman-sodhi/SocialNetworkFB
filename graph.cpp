@@ -19,12 +19,6 @@ void Graph::addFriend(string friend1, string friend2){
                 }
                 x.nextNode = new GraphNode(friend2);     
             }
-            if(x.mName == friend2){
-                while(x.nextNode != NULL){
-                    x.nextNode = x.nextNode->nextNode;
-                }
-                x.nextNode = new GraphNode(friend1);              
-            }
         }   
     }
     else {
@@ -34,36 +28,38 @@ void Graph::addFriend(string friend1, string friend2){
 }
 
 bool Graph::searchFriendship(string friend1, string friend2){
-
+    bool ans1 = false;
+    bool ans2 = false; 
     //if(searchPerson(friend1)){}
     for(auto& x : graphVec){
-       
+
         if(x.mName == friend1){
-            
-            while(x.nextNode != NULL){
+            GraphNode * temp = &x; 
+            while(temp->nextNode != NULL){
                 
-                if(x.nextNode->mName == friend2){
-                    return true;
+                if(temp->nextNode->mName == friend2){
+                    ans1 = true;
                 }
                 else{ 
-                    x.nextNode = x.nextNode->nextNode;
+                    temp->nextNode = temp->nextNode->nextNode;
                 }
             }
         }
         //repeat the same process if friend2 is found first in the vector
         else if(x.mName == friend2){
-            while(x.nextNode != NULL){
-                if(x.nextNode->mName == friend1){
-                    return true;
+            GraphNode * temp = &x; 
+            while(temp->nextNode != NULL){
+                if(temp->nextNode->mName == friend1){
+                    ans2 = true;
                 }
                 else{ 
-                    x.nextNode = x.nextNode->nextNode;
+                    temp->nextNode = temp->nextNode->nextNode;
                 }
             }            
         }
 
     }
-    return false;
+    return (ans1 && ans2);
 }
 
 /*

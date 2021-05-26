@@ -28,3 +28,35 @@
                 
                 } 
                 */ 
+                bool Graph::searchFriendship(string friend1, string friend2){
+
+    //if(searchPerson(friend1)){}
+    for(auto& x : graphVec){
+       
+        if(x.mName == friend1){
+            GraphNode * temp = &x; 
+            while(x.nextNode != NULL){
+                
+                if(x.nextNode->mName == friend2){
+                    return true;
+                }
+                else{ 
+                    x.nextNode = x.nextNode->nextNode;
+                }
+            }
+        }
+        //repeat the same process if friend2 is found first in the vector
+        else if(x.mName == friend2){
+            while(x.nextNode != NULL){
+                if(x.nextNode->mName == friend1){
+                    return true;
+                }
+                else{ 
+                    x.nextNode = x.nextNode->nextNode;
+                }
+            }            
+        }
+
+    }
+    return false;
+}

@@ -95,21 +95,49 @@ void read_csv(string fileName){
             g.addFriend(name, data);
         }
 
-        outfile << forName << forAge << forJob << endl;
+        int nameSize = sizeof(forName);    
+        int usedNameSize = strlen(forName);
+        outfile << forName;
+        string hold = "";
+        while(usedNameSize < nameSize){
+            hold = hold + " ";
+            usedNameSize++; 
+        }
+
+        outfile << hold; 
+        
+        const char * a = " ";
+        int ageSize = sizeof(forAge);
+        int usedAgeSize = strlen(forAge);
+        for(usedAgeSize; strlen(forAge) < ageSize; usedAgeSize++){
+            strcat(forAge, a);
+        }
+
+        const char * j = " "; 
+        int jobSize = sizeof(forJob);
+        int usedForJob = strlen(forJob);
+        for(usedForJob; strlen(forJob) < jobSize; usedForJob++){
+            strcat(forJob, j); 
+        }
+
+        outfile <<  forAge << forJob << endl;
     }
 
-    cout << "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" << endl;
-    cout << "graph name check" << endl;
+    //cout << "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" << endl;
+    //cout << "graph name check" << endl;
+
+    /*
     for(auto x : g.graphVec){
-        cout << "name is " << x.mName << endl;
-        cout << "friends are "; 
+        //cout << "name is " << x.mName << endl;
+        //cout << "friends are "; 
         g.printFriends(x.mName); 
 
     }
+    */
 
     //Testing individual cases
-    cout << "printing elizabeth's friends \n"; 
-    g.printFriends("Elizabeth Yang");
+    //cout << "printing elizabeth's friends \n"; 
+    //g.printFriends("Elizabeth Yang");
     
 }
 
