@@ -150,7 +150,7 @@ int Tree::count() {
 
 }
 
-set<Node*> Tree::searched() {
+vector<Node*> Tree::searched() {
 
     return mSearched;
 
@@ -165,51 +165,55 @@ void Tree::rotation(Node* node) {
 
     }
 
-    if (node->parent()->color() == Color::RED) {
+    Node* uncle = node->uncle();
+    Node* parent = node->parent();
+    Node* grandparent = node->grandparent();
 
-        if (node->uncle() != NULL && node->uncle()->color() == Color::RED) {
+    if (parent->color() == Color::RED) {
 
-            node->parent()->setColor(Color::BLACK);
-            node->uncle()->setColor(Color::BLACK);
-            node->grandparent()->setColor(Color::RED);
+        if (uncle != NULL && uncle->color() == Color::RED) {
 
-            rotation(node->grandparent());
+            parent->setColor(Color::BLACK);
+            uncle->setColor(Color::BLACK);
+            grandparent->setColor(Color::RED);
+
+            rotation(grandparent);
 
         }
         else {
 
-            if (node->parent()->onLeft()) {
+            if (parent->onLeft()) {
 
                 if (node->onLeft()) {
                     
-                    swapColors(node->parent(), node->grandparent());
+                    swapColors(parent, grandparent);
 
                 }
                 else {
 
-                    leftRotation(node->parent());
-                    swapColors(node, node->grandparent());
+                    swapColors(node, grandparent);
+                    leftRotation(parent);
 
                 }
 
-                rightRotation(node->grandparent());
+                rightRotation(grandparent);
 
             }
             else {
 
                 if (node->onLeft()) {
 
-                    rightRotation(node->parent());
-                    swapColors(node, node->grandparent());
+                    rightRotation(parent);
+                    swapColors(node, grandparent);
 
                 }
                 else {
 
-                    swapColors(node->parent(), node->grandparent());
+                    swapColors(parent, grandparent);
 
                 }
 
-                leftRotation(node->grandparent());
+                leftRotation(grandparent);
 
             }
 
@@ -293,7 +297,7 @@ void Tree::swapColors(Node* node1, Node* node2) {
 
 }
 
-void Tree::traversal(Node* node, Node* min, Node* max, set<Node*>& nodes) {
+void Tree::traversal(Node* node, vector<Node*>& nodes) {
 
     if (node == NULL) {
 
@@ -301,21 +305,9 @@ void Tree::traversal(Node* node, Node* min, Node* max, set<Node*>& nodes) {
 
     }
 
-    if (node->left()->name() < min->name() && node->right()->name() > max->name()) {
-
-        traversal(node->left(), min, max, nodes);
-        nodes.insert(node);
-        traversal(node->right(), min, max, nodes);
-
-    }
-
-    /*nodes.insert(node);
-
-    if (node->right()->name() > max->name()) {
-
-        traversal(node->right(), min, max, nodes);
-
-    }*/
+    traversal(node->left(), nodes);
+    nodes.push_back(node);
+    traversal(node->right(), nodes);
 
 }
 
@@ -349,14 +341,29 @@ Node* Tree::getMax() {
 
 Node* Tree::search(Node* node, string name) {
 
-    if (node->name() == name || node == NULL) {
+    if (node->name() == name) {
 
+        cout << "Found: " << node->name() << endl;
         return node;
 
     }
+
     if (node->name() > name) {
 
+        if (node->left() == NULL) {
+
+            cout << "Left child: " << node->name() << endl;
+            return node;
+
+        }
+
         return search(node->left(), name);
+
+    }
+
+    if (node->right() == NULL) {
+
+        return node;
 
     }
 
@@ -367,28 +374,21 @@ Node* Tree::search(Node* node, string name) {
 void Tree::rangeSearch(Node* min, Node* max) {
 
     mSearched.clear();
+    vector<Node*> temp;
     Node* minNode = search(root(), min->name());
     Node* maxNode = search(root(), max->name());
 
-    mSearched.insert(minNode);
+    traversal(root(), temp);
 
-    if (minNode->name() < root()->name()) {
+    for (auto& node: temp) {
 
-        traversal(root(), min, max, mSearched);
+        if (node->name() >= minNode->name() && node->name() <= maxNode->name()) {
 
-    }
-    else if (minNode->name() == root()->name()) {
+            mSearched.push_back(node);
 
-        traversal(minNode->left(), min, max, mSearched);
-
-    }
-    else {
-
-        traversal(minNode, min, max, mSearched);
+        }
 
     }
-
-    mSearched.insert(maxNode);
 
 }
 
@@ -400,8 +400,8 @@ void Tree::insertion(string name) {
 
     if (mRoot == NULL) {
 
-        mRoot->setColor(Color::BLACK);
         mRoot = node;
+        mRoot->setColor(Color::BLACK);
         return;
 
     }
@@ -409,7 +409,7 @@ void Tree::insertion(string name) {
 
         Node* temp = search(root(), name);
 
-        if (temp->name() == name) {
+        if (temp != NULL && temp->name() == name) {
 
             return;
 

@@ -10,14 +10,17 @@
 #include <algorithm>
 #include <cmath>
 #include "graph.h"
-#include "global.h"
-#include "profileData.h"
+#include "RedBlack.h"
 
 using namespace std; 
 
-void read_csv(string fileName);
 void consumeColumnNames(ifstream &myFile);
 string getField(stringstream &ss);
 string stripQuotes(std::string temp);
+string readDataName(int lineNumber);
+string readDataJob(int lineNumber);
+string readDataAge(int lineNumber);
+void addNewPerson(string name, string age, string job);
+void read_csv(string fileName, Graph& g, Tree* t);
 
 #endif
