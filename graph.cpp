@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include "graph.h"
-#include "global.h"
 
 using namespace std;
 
@@ -15,9 +14,10 @@ void Graph::addFriend(string friend1, string friend2){
         for(auto &x : graphVec){
             if(x.mName == friend1){
                 while(x.nextNode != NULL){
+                    cout << "Next node: " << x.nextNode->mName << endl;
                     x.nextNode = x.nextNode->nextNode;
                 }
-                x.nextNode = new GraphNode(friend2);     
+                x.nextNode = new GraphNode(friend2);  
             }
         }   
     }

@@ -3,6 +3,8 @@
 
 #include <string>
 #include <set>
+#include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -47,7 +49,7 @@ class Tree {
 private:
     Node *mRoot;
     int mCount;
-    set<Node*> mSearched;
+    vector<Node*> mSearched;
 
 public:
 
@@ -55,14 +57,14 @@ public:
 
     Node* root();
     int count();
-    set<Node*> searched();
+    vector<Node*> searched();
 
     void rotation(Node* node);
     void leftRotation(Node* node);
     void rightRotation(Node* node);
     void swapColors(Node* node1, Node* node2);
 
-    void traversal(Node* node, Node* min, Node* max, set<Node*>& nodes);
+    void traversal(Node* node, vector<Node*>& nodes);
     Node* getMin();
     Node* getMax();
 

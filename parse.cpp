@@ -5,9 +5,8 @@
 #include <sstream>
 #include <vector>
 #include "graph.h"
-#include "global.h"
 #include "parse.h"
-#include "profileData.h"
+#include "RedBlack.h"
 
 using namespace std; 
 
@@ -58,12 +57,111 @@ void consumeColumnNames(ifstream &myFile) {
     }
 }
 
+string readDataName(int lineNumber){
+    
+    ifstream temp; 
+    temp.open("data.txt");
+    temp.seekg(0, ios::end);
+    // i think the line length is 54 because it 53 bits + "\0" end line character
+    int length = temp.tellg();
+    char holdName[20];
+    int position = ( (lineNumber) * 54);
+    temp.seekg(position, ios::beg);
+    char a2[20];
+    temp.read(a2, 20);
 
-void read_csv(string fileName){
+    return a2;
+    
+}
+
+string readDataAge(int lineNumber){
+    
+    ifstream temp; 
+    temp.open("data.txt");
+    temp.seekg(0, ios::end);
+    // i think the line length is 54 because it 53 bits + "\n" end line character
+    int length = temp.tellg();
+    char holdName[3];
+    int position = ( (lineNumber) * 54) + 20;
+    temp.seekg(0, ios::beg);
+    temp.seekg(position, ios::beg);
+    char a2[3];
+    temp.read(a2, 3);
+
+    return a2;
+}
+
+string readDataJob(int lineNumber){
+    
+    ifstream temp; 
+    temp.open("data.txt");
+    temp.seekg(0, ios::end);
+    // i think the line length is 54 because it 53 bits + "\n" end line character
+    int length = temp.tellg();
+    char holdName[3];
+    int position = ( (lineNumber) * 54) + 23;
+    temp.seekg(0, ios::beg);
+    temp.seekg(position, ios::beg);
+    char a2[30];
+    temp.read(a2, 30);
+
+    return a2;
+    
+}
+
+void addNewPerson(string name, string age, string job){
+    //converting string to char
+    char forName[20]; 
+    strncpy(forName, name.c_str(), sizeof(forName));
+    char forAge[3];
+    strncpy(forAge, age.c_str(), sizeof(forAge));
+    char forJob[30];
+    strncpy(forJob, job.c_str(), sizeof(forJob));   
+    //opening file to read
+    fstream outfile;
+    outfile.open("data.txt", ios::in); 
+    //Global Initialiation of Graph
+    // g.addPerson(name)
+    // inserting into Profile Data
+    outfile.seekg(0, ios::end);
+    int fileLength = outfile.tellg();
+    int position = fileLength/54;
+    outfile.seekg(position, ios::beg);
+    outfile << forName;
+    string hold = "";
+    int nameSize = sizeof(forName);    
+    int usedNameSize = strlen(forName);
+    while(usedNameSize < nameSize){
+        hold = hold + "@";
+        usedNameSize++; 
+    }
+    outfile << hold;
+    //writring age 
+    outfile << age;
+    string aAge = "";
+    int ageSize = sizeof(forAge);
+    int usedAgeSize = strlen(forAge);
+    while(usedAgeSize < ageSize){
+        aAge = aAge + "!";
+        usedAgeSize++;
+    }
+    outfile << aAge; 
+    outfile << job;
+    string jJob = "";
+    int jobSize = sizeof(forJob);
+    int usedJobSize = strlen(forJob);
+    while(usedJobSize < jobSize){
+        jJob = jJob + "*";
+        usedJobSize++;
+    }
+    outfile << jJob; 
+    //add endline
+    outfile << "\n";
+}
+
+void read_csv(string fileName, Graph& g, Tree* t){
     ifstream inputFile(fileName);
     string line;
-    Graph g; 
-
     
     //read the column names  
     consumeColumnNames(inputFile); 
@@ -88,10 +186,14 @@ void read_csv(string fileName){
         strncpy(forJob, job.c_str(), sizeof(forJob));   
 
         //inserting to vector
-        g.addPerson(name); 
+        g.addPerson(name);
+        t->insertion(name);
+
         string data; 
         stringstream friends(Friend);
-        while(getline(friends, data)){
+        cout << "name: " << name << endl;
+        while(getline(friends, data, ',')){
+            cout << "data: " << data << endl;
             g.addFriend(name, data);
         }
 
@@ -100,20 +202,20 @@ void read_csv(string fileName){
         outfile << forName;
         string hold = "";
         while(usedNameSize < nameSize){
-            hold = hold + " ";
+            hold = hold + "@";
             usedNameSize++; 
         }
 
         outfile << hold; 
         
-        const char * a = " ";
+        const char * a = "@";
         int ageSize = sizeof(forAge);
         int usedAgeSize = strlen(forAge);
         for(usedAgeSize; strlen(forAge) < ageSize; usedAgeSize++){
             strcat(forAge, a);
         }
 
-        const char * j = " "; 
+        const char * j = "@"; 
         int jobSize = sizeof(forJob);
         int usedForJob = strlen(forJob);
         for(usedForJob; strlen(forJob) < jobSize; usedForJob++){
@@ -122,22 +224,6 @@ void read_csv(string fileName){
 
         outfile <<  forAge << forJob << endl;
     }
-
-    //cout << "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" << endl;
-    //cout << "graph name check" << endl;
-
-    /*
-    for(auto x : g.graphVec){
-        //cout << "name is " << x.mName << endl;
-        //cout << "friends are "; 
-        g.printFriends(x.mName); 
-
-    }
-    */
-
-    //Testing individual cases
-    //cout << "printing elizabeth's friends \n"; 
-    //g.printFriends("Elizabeth Yang");
     
 }
 

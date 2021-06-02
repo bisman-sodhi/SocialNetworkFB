@@ -2,14 +2,13 @@
 #define GRAPH_H
 #include <iostream>
 #include <vector>
-#include "profileData.h"
 
 using namespace std;
 
 struct GraphNode {
 
     string mName;
-    //int dataIndex; 
+    int dataIndex; 
     GraphNode * nextNode;
     GraphNode() : mName(""), nextNode(NULL) {}; 
     GraphNode(string inName) : mName(inName), nextNode(NULL) {}; 
@@ -28,7 +27,8 @@ class Graph {
 
     public: 
         //constructor
-        vector<GraphNode> graphVec; 
+        vector<GraphNode> graphVec;
+        int gVecIndex;
 
         Graph(string inVec) {
             graphVec.resize(10); 
@@ -37,6 +37,7 @@ class Graph {
         
         Graph(){
             graphVec.resize(10);
+            gVecIndex = 0;
         }
         
         
