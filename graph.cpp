@@ -11,15 +11,16 @@ void Graph::addFriend(string friend1, string friend2){
     //foundFriendship = searchFriendship(friend1, friend2);
     
     if(foundFriendship == false){
-        for(auto &x : graphVec){
-            if(x.mName == friend1){
-                while(x.nextNode != NULL){
-                    cout << "Next node: " << x.nextNode->mName << endl;
-                    x.nextNode = x.nextNode->nextNode;
-                }
-                x.nextNode = new GraphNode(friend2);  
+        for (auto& node: graphVec) {
+
+            if (node.mName == friend1) {
+
+                GraphNode* friendNode = new GraphNode(friend2);
+                node.friends.push_back(friendNode);
+
             }
-        }   
+
+        }  
     }
     else {
         cout << "Already friends \n";
@@ -73,13 +74,12 @@ GraphNode & Graph::searchPerson(string person){
 */
 
 void Graph::addPerson(string person){
-    graphVec[gVecIndex] = GraphNode(person);
-    gVecIndex++; 
+    graphVec.push_back(GraphNode(person));
 }
 
 void Graph::printFriends(string person){
     
-    for(auto x : graphVec){
+    /*for(auto x : graphVec){
         if(x.mName == person){
             GraphNode * temp = &x; 
             while(temp->nextNode != NULL){
@@ -87,6 +87,20 @@ void Graph::printFriends(string person){
                 temp = temp->nextNode; 
             }
         }
+    }*/
+
+    for (auto& node: graphVec) {
+
+        if (node.mName == person) {
+
+            for (auto& item: node.friends) {
+
+                cout << item->mName << endl;
+
+            }
+
+        }
+
     }
 }
 

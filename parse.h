@@ -20,7 +20,7 @@ string stripQuotes(std::string temp);
 string readDataName(int lineNumber);
 string readDataJob(int lineNumber);
 string readDataAge(int lineNumber);
-void addNewPerson(string name, string age, string job);
+void addNewPerson(string name, string age, string job, Graph& g);
 void read_csv(string fileName, Graph& g, Tree* t);
 
 #endif

@@ -297,7 +297,7 @@ void Tree::swapColors(Node* node1, Node* node2) {
 
 }
 
-void Tree::traversal(Node* node, vector<Node*>& nodes) {
+void Tree::traversal(Node* node, vector<Node*>& nodes, Node* min, Node* max) {
 
     if (node == NULL) {
 
@@ -305,9 +305,23 @@ void Tree::traversal(Node* node, vector<Node*>& nodes) {
 
     }
 
-    traversal(node->left(), nodes);
-    nodes.push_back(node);
-    traversal(node->right(), nodes);
+    if (node->name() >= min->name()) {
+
+        traversal(node->left(), nodes, min, max);
+
+    }
+
+    if (node->name() >= min->name() && node->name() <= max->name()) {
+
+        nodes.push_back(node);
+
+    }
+
+    if (node->name() <= max->name()) {
+
+        traversal(node->right(), nodes, min, max);
+
+    }
 
 }
 
@@ -343,7 +357,6 @@ Node* Tree::search(Node* node, string name) {
 
     if (node->name() == name) {
 
-        cout << "Found: " << node->name() << endl;
         return node;
 
     }
@@ -352,7 +365,6 @@ Node* Tree::search(Node* node, string name) {
 
         if (node->left() == NULL) {
 
-            cout << "Left child: " << node->name() << endl;
             return node;
 
         }
@@ -374,21 +386,7 @@ Node* Tree::search(Node* node, string name) {
 void Tree::rangeSearch(Node* min, Node* max) {
 
     mSearched.clear();
-    vector<Node*> temp;
-    Node* minNode = search(root(), min->name());
-    Node* maxNode = search(root(), max->name());
-
-    traversal(root(), temp);
-
-    for (auto& node: temp) {
-
-        if (node->name() >= minNode->name() && node->name() <= maxNode->name()) {
-
-            mSearched.push_back(node);
-
-        }
-
-    }
+    traversal(root(), mSearched, min, max);
 
 }
 

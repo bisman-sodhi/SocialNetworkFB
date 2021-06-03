@@ -10,6 +10,7 @@ struct GraphNode {
     string mName;
     int dataIndex; 
     GraphNode * nextNode;
+    vector<GraphNode*> friends;
     GraphNode() : mName(""), nextNode(NULL) {}; 
     GraphNode(string inName) : mName(inName), nextNode(NULL) {}; 
     GraphNode(string inName, GraphNode * inPtr) : mName(inName), nextNode(inPtr) {};
@@ -36,7 +37,6 @@ class Graph {
         };
         
         Graph(){
-            graphVec.resize(10);
             gVecIndex = 0;
         }
         
