@@ -251,7 +251,7 @@ int main() {
 
             }
 
-            tree->rangeSearch(tree->search(tree->root(), lower), tree->search(tree->root(), upper));
+            tree->rangeSearch(lower, upper);
 
             for (auto& user: tree->searched()) {
 
