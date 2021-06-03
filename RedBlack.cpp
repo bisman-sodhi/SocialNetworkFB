@@ -297,7 +297,7 @@ void Tree::swapColors(Node* node1, Node* node2) {
 
 }
 
-void Tree::traversal(Node* node, vector<Node*>& nodes, Node* min, Node* max) {
+void Tree::traversal(Node* node, vector<Node*>& nodes, string min, string max) {
 
     if (node == NULL) {
 
@@ -305,19 +305,19 @@ void Tree::traversal(Node* node, vector<Node*>& nodes, Node* min, Node* max) {
 
     }
 
-    if (node->name() >= min->name()) {
+    if (node->name() >= min) {
 
         traversal(node->left(), nodes, min, max);
 
     }
 
-    if (node->name() >= min->name() && node->name() <= max->name()) {
+    if (node->name() >= min && node->name() <= max) {
 
         nodes.push_back(node);
 
     }
 
-    if (node->name() <= max->name()) {
+    if (node->name() <= max) {
 
         traversal(node->right(), nodes, min, max);
 
@@ -325,7 +325,7 @@ void Tree::traversal(Node* node, vector<Node*>& nodes, Node* min, Node* max) {
 
 }
 
-Node* Tree::getMin() {
+string Tree::getMin() {
 
     Node* min = mRoot;
 
@@ -335,11 +335,11 @@ Node* Tree::getMin() {
 
     }
 
-    return min;
+    return min->name();
 
 }
 
-Node* Tree::getMax() {
+string Tree::getMax() {
 
     Node* max = mRoot;
 
@@ -349,7 +349,7 @@ Node* Tree::getMax() {
 
     }
 
-    return max;
+    return max->name();
 
 }
 
@@ -383,7 +383,7 @@ Node* Tree::search(Node* node, string name) {
     
 }
 
-void Tree::rangeSearch(Node* min, Node* max) {
+void Tree::rangeSearch(string min, string max) {
 
     mSearched.clear();
     traversal(root(), mSearched, min, max);

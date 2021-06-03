@@ -65,12 +65,12 @@ public:
     void swapColors(Node* node1, Node* node2);
 
     //void traversal(Node* node, vector<Node*>& nodes);
-    void traversal(Node* node, vector<Node*>& nodes, Node* min, Node* max);
-    Node* getMin();
-    Node* getMax();
+    void traversal(Node* node, vector<Node*>& nodes, string min, string max);
+    string getMin();
+    string getMax();
 
     Node* search(Node* node, string name);
-    void rangeSearch(Node* min, Node* max);
+    void rangeSearch(string min, string max);
     void insertion(string name);
 
 };
