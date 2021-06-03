@@ -109,7 +109,7 @@ string readDataJob(int lineNumber){
     
 }
 
-void addNewPerson(string name, string age, string job){
+void addNewPerson(string name, string age, string job, Graph& g){
     //converting string to char
     char forName[20]; 
     strncpy(forName, name.c_str(), sizeof(forName));
@@ -118,15 +118,16 @@ void addNewPerson(string name, string age, string job){
     char forJob[30];
     strncpy(forJob, job.c_str(), sizeof(forJob));   
     //opening file to read
-    fstream outfile;
-    outfile.open("data.txt", ios::in); 
+    ofstream outfile;
+    //outfile.open("data.txt", ios::in); 
+    outfile.open("data.txt", std::ios::app);
     //Global Initialiation of Graph
-    // g.addPerson(name)
+    g.addPerson(name);
     // inserting into Profile Data
-    outfile.seekg(0, ios::end);
-    int fileLength = outfile.tellg();
+    outfile.seekp(0, ios::end);
+    int fileLength = outfile.tellp();
     int position = fileLength/54;
-    outfile.seekg(position, ios::beg);
+    outfile.seekp(position, ios::beg);
     outfile << forName;
     string hold = "";
     int nameSize = sizeof(forName);    
@@ -142,7 +143,7 @@ void addNewPerson(string name, string age, string job){
     int ageSize = sizeof(forAge);
     int usedAgeSize = strlen(forAge);
     while(usedAgeSize < ageSize){
-        aAge = aAge + "!";
+        aAge = aAge + "@";
         usedAgeSize++;
     }
     outfile << aAge; 
@@ -151,7 +152,7 @@ void addNewPerson(string name, string age, string job){
     int jobSize = sizeof(forJob);
     int usedJobSize = strlen(forJob);
     while(usedJobSize < jobSize){
-        jJob = jJob + "*";
+        jJob = jJob + "@";
         usedJobSize++;
     }
     outfile << jJob; 
@@ -191,9 +192,7 @@ void read_csv(string fileName, Graph& g, Tree* t){
 
         string data; 
         stringstream friends(Friend);
-        cout << "name: " << name << endl;
         while(getline(friends, data, ',')){
-            cout << "data: " << data << endl;
             g.addFriend(name, data);
         }
 

@@ -64,7 +64,8 @@ public:
     void rightRotation(Node* node);
     void swapColors(Node* node1, Node* node2);
 
-    void traversal(Node* node, vector<Node*>& nodes);
+    //void traversal(Node* node, vector<Node*>& nodes);
+    void traversal(Node* node, vector<Node*>& nodes, Node* min, Node* max);
     Node* getMin();
     Node* getMax();
 

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <climits>
 
 using namespace std;
 
@@ -38,6 +39,7 @@ int main() {
     Graph graph;
 
     int x;
+    bool intialized = false;
     cout << "Welcome!" << endl;
 
     do {
@@ -46,21 +48,31 @@ int main() {
         cout << "2) Insert a new user." << endl;
         cout << "3) Insert a friendship." << endl;
         cout << "4) Print all." << endl;
-        cout << "5) List friends' info." << endl;
-        cout << "6) List info." << endl;
-        cout << "7) Exit." << endl;
-        cout << "Which operation do you want to make? (1,2,3,4,5,6,7): ";
+        cout << "5) List user's info." << endl;
+        cout << "6) List friends' info." << endl;
+        cout << "7) List range of users' info." << endl;
+        cout << "8) Exit." << endl;
+        cout << "Which operation do you want to make? (1,2,3,4,5,6,7,8): ";
         cin >> x;
 
-        while  (x != 1 && x != 2 && x != 3 && x != 4 && x != 5 && x!= 6 && x!= 7) {
+        while  (x != 1 && x != 2 && x != 3 && x != 4 && x != 5 && x!= 6 && x!= 7 && x!=8) {
 
             cout << "wrong operation!" << endl;
-            cout << "Which operation do you want to make? (1,2,3,4,5,6,7): ";
+            cout << "Which operation do you want to make? (1,2,3,4,5,6,7,8): ";
             cin >> x;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
 
         }
 
         if (x == 1) {
+
+            if (intialized) {
+
+                cout << "Already intialized the network." << endl;
+                continue;
+
+            }
 
             string file;
             cout << "Enter file name:" << endl;
@@ -73,59 +85,66 @@ int main() {
             
             for (auto& item: graph.graphVec) {
 
-                GraphNode* node = &item;
-                while (node->nextNode != NULL) {
+                for (auto& person: item.friends) {
 
-                    node = node->nextNode;
-                    Node* treeNode = tree->search(tree->root(), node->mName);
-                    node->dataIndex = treeNode->order();
+                    Node* treeNode = tree->search(tree->root(), person->mName);
+                    person->dataIndex = treeNode->order();
 
                 }
 
             }
 
+            intialized = true;
+
         }
         else if (x == 2) {
 
-            string name, age, occupation;
+            string firstName, lastName, name, age, occupation;
             cout << "Enter user's name:" << endl;
-            cin >> name;
+            cin >> firstName >> lastName;
+            name = firstName + ' ' + lastName;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
 
             cout << "Enter user's age:" << endl;
-            cin.clear();
-            cin.ignore(256, '\n');
             cin >> age;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
 
             cout << "Enter user's occupation:" << endl;
-            cin.clear();
-            cin.ignore(256, '\n');
             cin >> occupation;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+
             graph.addPerson(name);
-            // write onto disk
+            addNewPerson(name, age, occupation, graph);
+            tree->insertion(name);
 
         }
         else if (x == 3) {
 
-            string friend1, friend2;
+            string first1, last1, first2, last2, friend1, friend2;
             cout << "Enter friend 1:" << endl;
-            cin >> friend1;
-            cout << "Enter friend 2:" << endl;
+            cin >> first1 >> last1;
+            friend1 = first1 + ' ' + last1;
             cin.clear();
-            cin.ignore(256, '\n');
-            cin >> friend2;
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            cout << "Enter friend 2:" << endl;
+            cin >> first2 >> last2;
+            friend2 = first2 + ' ' + last2;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
 
             graph.addFriend(friend1, friend2);
             graph.addFriend(friend2, friend1);
-            
-            // add friendship to profile data
 
         }
         else if (x == 4) {
 
             if (tree->count() == 0) {
 
-                cout << "No users in network.  Choose another operation." << endl;
-                cin >> x;
+                cout << "No users in network." << endl;
+                continue;
 
             }
 
@@ -138,43 +157,92 @@ int main() {
                 cout << user->name() << endl;
                 cout << "   Age: " << strip(readDataAge(user->order())) << endl;
                 cout << "   Occupation: " << strip(readDataJob(user->order())) << endl;
-                cout << "   Friends: " << endl; // read from profile data at line user->order() + 1
+                cout << "   Friends: " << endl; 
+                
+                GraphNode node = graph.graphVec[user->order()];
+                for (auto& person: node.friends) {
+
+                    cout << "       " << person->mName << endl;
+
+                }
 
             }
 
         }
         else if (x == 5) {
 
-            string user;
+            string first, last, user;
             cout << "Enter user: " << endl;
-            cin >> user;
+            cin >> first >> last;
+            user = first + ' ' + last;
 
             Node* node = tree->search(tree->root(), user);
-            GraphNode* graphNode = &graph.graphVec[node->order()];
-            cout << graphNode->mName << endl;
+            if (user != node->name()) {
 
-            while (graphNode->nextNode != NULL) {
-
-                graphNode = graphNode->nextNode;
-                cout << graphNode->mName << endl;
-                cout << "   Age: " << strip(readDataAge(graphNode->dataIndex)) << endl;
-                cout << graphNode->dataIndex << endl;
-                cout << "   Occupation: " << strip(readDataJob(graphNode->dataIndex)) << endl;
+                cout << "User is not in network." << endl;
+                continue; 
 
             }
 
-            break;
+            cout << node->name() << endl;
+            cout << "   Age: " << strip(readDataAge(node->order())) << endl;
+            cout << "   Occupation: " << strip(readDataJob(node->order())) << endl;
+            cout << "   Friends: " << endl; 
+
+            GraphNode graphNode = graph.graphVec[node->order()];
+            for (auto& person: graphNode.friends) {
+
+                cout << "       " << person->mName << endl;
+
+            }
 
         }
         else if (x == 6) {
 
-            string lower, upper;
+            string first, last, user;
+            cout << "Enter user: " << endl;
+            cin >> first >> last;
+            user = first + ' ' + last;
+
+            Node* node = tree->search(tree->root(), user);
+            if (user != node->name()) {
+
+                cout << "User is not in network." << endl;
+                continue; 
+
+            }
+
+            GraphNode* graphNode = &graph.graphVec[node->order()];
+            cout << graphNode->mName << endl;
+
+            for (auto& person: graphNode->friends) {
+
+                cout << person->mName << endl;
+                cout << "   Age: " << strip(readDataAge(person->dataIndex)) << endl;
+                cout << "   Occupation: " << strip(readDataJob(person->dataIndex)) << endl;
+
+            }
+
+        }
+        else if (x == 7) {
+
+            string firstLower, lastLower, firstUpper, lastUpper, lower, upper;
             cout << "Enter lower bound: " << endl;
-            cin >> lower;
-            cout << "Enter upper bound: " << endl;
+            cin >> firstLower >> lastLower;
+            lower = firstLower + ' ' + lastLower;
             cin.clear();
-            cin.ignore(256, '\n');
-            cin >> upper;
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            cout << "Enter upper bound: " << endl;
+            cin >> firstUpper >> lastUpper;
+            upper = firstUpper + ' ' + lastUpper;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+
+            if (tree->count() == 0) {
+
+                continue;
+
+            }
 
             tree->rangeSearch(tree->search(tree->root(), lower), tree->search(tree->root(), upper));
 
@@ -183,13 +251,20 @@ int main() {
                 cout << user->name() << endl;
                 cout << "   Age: " << strip(readDataAge(user->order())) << endl;
                 cout << "   Occupation: " << strip(readDataJob(user->order())) << endl;
-                cout << "   Friends: " << endl; // graph[user.order()].friends
+                cout << "   Friends: " << endl;
+
+                GraphNode node = graph.graphVec[user->order()];
+                for (auto& person: node.friends) {
+
+                    cout << "       " << person->mName << endl;
+
+                }
 
             }
 
         }
 
     }
-    while (x != 7);
+    while (x != 8);
 
 }
