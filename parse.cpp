@@ -7,6 +7,7 @@
 #include "graph.h"
 #include "parse.h"
 #include "RedBlack.h"
+#include "Common.h"
 
 using namespace std; 
 
@@ -158,6 +159,7 @@ void addNewPerson(string name, string age, string job, Graph& g){
     outfile << jJob; 
     //add endline
     outfile << "\n";
+    counter++;
 }
 
 void read_csv(string fileName, Graph& g, Tree* t){
@@ -193,8 +195,9 @@ void read_csv(string fileName, Graph& g, Tree* t){
         string data; 
         stringstream friends(Friend);
         while(getline(friends, data, ',')){
-            g.addFriend(name, data);
+            g.addFriend(name, data, counter);
         }
+        counter++;
 
         int nameSize = sizeof(forName);    
         int usedNameSize = strlen(forName);

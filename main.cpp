@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <climits>
+#include "Common.h"
 
 using namespace std;
 
@@ -33,10 +34,13 @@ string strip(string str) {
 
 }
 
+int counter;
+
 int main() {
 
     Tree* tree = new Tree();
     Graph graph;
+    counter = 0;
 
     int x;
     bool intialized = false;
@@ -135,8 +139,11 @@ int main() {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(),'\n');
 
-            graph.addFriend(friend1, friend2);
-            graph.addFriend(friend2, friend1);
+            Node* node1 = tree->search(tree->root(), friend1);
+            Node* node2 = tree->search(tree->root(), friend2);
+
+            graph.addFriend(friend1, friend2, node1->order());
+            graph.addFriend(friend2, friend1, node2->order());
 
         }
         else if (x == 4) {

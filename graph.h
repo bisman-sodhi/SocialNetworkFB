@@ -42,7 +42,7 @@ class Graph {
         
         
         //member functions: 
-        void addFriend(string friend1, string friend2);
+        void addFriend(string friend1, string friend2, int index);
         //could change return type from bool to something else
         bool searchFriendship(string friend1, string friend2);
         GraphNode & searchPerson(string person); 

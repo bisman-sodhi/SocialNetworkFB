@@ -14,6 +14,7 @@
 
 using namespace std; 
 
+
 void consumeColumnNames(ifstream &myFile);
 string getField(stringstream &ss);
 string stripQuotes(std::string temp);
