@@ -127,6 +127,13 @@ int main() {
         }
         else if (x == 3) {
 
+            if (tree->count() == 0) {
+
+                cout << "No users in network." << endl;
+                continue;
+
+            }
+
             string first1, last1, first2, last2, friend1, friend2;
             cout << "Enter friend 1:" << endl;
             cin >> first1 >> last1;
@@ -141,6 +148,25 @@ int main() {
 
             Node* node1 = tree->search(tree->root(), friend1);
             Node* node2 = tree->search(tree->root(), friend2);
+
+            if (node1->name() != friend1 && node2->name() != friend2) {
+
+                cout << "Both friends are not in the network." << endl;
+                continue;
+
+            }
+            if (node1->name() != friend1) {
+
+                cout << "Friend 1 is not in the network." << endl;
+                continue;
+
+            }
+            if (node2->name() != friend2) {
+
+                cout << "Friend 2 is not in the network." << endl;
+                continue;
+
+            }
 
             graph.addFriend(friend1, friend2, node1->order());
             graph.addFriend(friend2, friend1, node2->order());
