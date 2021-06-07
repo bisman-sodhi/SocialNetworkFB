@@ -123,7 +123,7 @@ void addNewPerson(string name, string age, string job, Graph& g){
     //outfile.open("data.txt", ios::in); 
     outfile.open("data.txt", std::ios::app);
     //Global Initialiation of Graph
-    g.addPerson(name);
+    //g.addPerson(name);
     // inserting into Profile Data
     outfile.seekp(0, ios::end);
     int fileLength = outfile.tellp();

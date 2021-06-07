@@ -29,3 +29,20 @@ void Graph::addFriend(string friend1, string friend2, int index){
 void Graph::addPerson(string person){
     graphVec.push_back(GraphNode(person));
 } 
+
+bool Graph::searchFriendship(string friend2, int index) {
+
+    vector<GraphNode*> friends = graphVec[index].friends;
+    for (auto& person: friends) {
+
+        if (person->mName == friend2) {
+
+            return true;
+
+        }
+
+    }
+
+    return false;
+
+}
