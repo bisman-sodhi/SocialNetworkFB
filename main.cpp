@@ -87,8 +87,6 @@ int main() {
 
             file = file + ".csv";
             read_csv(file, graph, tree);
-
-            int i = 1;
             
             for (auto& item: graph.graphVec) {
 
@@ -125,12 +123,24 @@ int main() {
             stringstream ss(friends);
 
             graph.addPerson(name);
+            int count = 1;
+
             while (getline(ss, friendName, ',')) {
 
                 Node* node = tree->search(tree->root(), friendName);
+                if (node->name() != friendName) {
+
+                    cout << "Friend " << count << " is not in network." << endl;
+                    count++;
+                    continue;
+
+                }
+
                 graph.addFriend(name, friendName, counter);
                 graph.addFriend(friendName, name, node->order());
                 graph.graphVec[counter].friends.back()->dataIndex = node->order();
+                graph.graphVec[node->order()].friends.back()->dataIndex = counter;
+                count++;
 
             }
 
