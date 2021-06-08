@@ -114,9 +114,7 @@ int main() {
             cin.ignore(numeric_limits<streamsize>::max(),'\n');
 
             cout << "Enter user's occupation:" << endl;
-            cin >> occupation;
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            getline(cin, occupation);
 
             cout << "Enter user's friends: " << endl;
             getline(cin, friends);
