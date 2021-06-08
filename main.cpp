@@ -106,7 +106,7 @@ int main() {
         }
         else if (x == 2) {
 
-            string firstName, lastName, name, age, occupation;
+            string firstName, lastName, name, age, occupation, friends, friendName;
             cout << "Enter user's name:" << endl;
             getline(cin, name);
 
@@ -120,7 +120,20 @@ int main() {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(),'\n');
 
+            cout << "Enter user's friends: " << endl;
+            getline(cin, friends);
+            stringstream ss(friends);
+
             graph.addPerson(name);
+            while (getline(ss, friendName, ',')) {
+
+                Node* node = tree->search(tree->root(), friendName);
+                graph.addFriend(name, friendName, counter);
+                graph.addFriend(friendName, name, node->order());
+                graph.graphVec[counter].friends.back()->dataIndex = node->order();
+
+            }
+
             addNewPerson(name, age, occupation, graph);
             tree->insertion(name);
 
